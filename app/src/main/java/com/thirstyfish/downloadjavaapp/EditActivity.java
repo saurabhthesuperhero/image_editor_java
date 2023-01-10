@@ -182,7 +182,7 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                ImageUtils.INSTANCE.downloadImageFromImageView(EditActivity.this,imageViewMain);
-                HideStickers()
+                HideStickers();
 
                 ImageNonStaticUtils imageNonStaticUtils= new ImageNonStaticUtils();
                 imageNonStaticUtils.saveImage(EditActivity.this,imageViewMain,frame_layout);
