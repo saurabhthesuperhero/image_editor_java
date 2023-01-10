@@ -1,10 +1,12 @@
 package com.thirstyfish.downloadjavaapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,6 +21,7 @@ import com.github.dhaval2404.colorpicker.ColorPickerDialog;
 import com.github.dhaval2404.colorpicker.listener.ColorListener;
 import com.github.dhaval2404.colorpicker.model.ColorShape;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.thirstyfish.downloadjavaapp.stickerview.StickerView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -43,6 +46,7 @@ public class EditActivity extends AppCompatActivity {
     FrameLayout frame_layout;
     Button bt_original;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +182,8 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                ImageUtils.INSTANCE.downloadImageFromImageView(EditActivity.this,imageViewMain);
+                HideStickers()
+
                 ImageNonStaticUtils imageNonStaticUtils= new ImageNonStaticUtils();
                 imageNonStaticUtils.saveImage(EditActivity.this,imageViewMain,frame_layout);
             }
@@ -197,7 +203,35 @@ public class EditActivity extends AppCompatActivity {
                 ImageUtils.INSTANCE.opendialogtext(EditActivity.this,frame_layout);
             }
         });
+
+        frame_layout.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    HideStickers();
+                }
+                return true;
+            }
+        });
+
     }
+
+    void HideStickers() {
+        FrameLayout fm = frame_layout;
+        int childcount = frame_layout.getChildCount();
+
+        if (childcount != 0) {
+            for (int i = 0; i < childcount; i++) {
+                View v = fm.getChildAt(i);
+
+                if (v instanceof StickerView) {
+                    ((StickerView) v).setControlItemsHidden(true);
+                }
+            }
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

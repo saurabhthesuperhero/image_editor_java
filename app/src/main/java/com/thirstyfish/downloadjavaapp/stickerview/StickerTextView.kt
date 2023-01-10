@@ -29,7 +29,7 @@ class StickerTextView : StickerView {
             tv_main!!.gravity = Gravity.CENTER
             tv_main!!.textSize = 300f
             tv_main!!.setShadowLayer(4f, 0f, 0f, Color.BLACK)
-            tv_main!!.maxLines = 1
+            tv_main!!.maxLines = 10
             val params = FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
