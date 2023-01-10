@@ -212,11 +212,15 @@ public class EditActivity extends AppCompatActivity {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getPointerCount() == 1) {
+                if (event.getPointerCount() == 2){
+                    imageViewMain.getScaleDetector().onTouchEvent(event);
+                }
+                else if (event.getPointerCount() == 1) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         HideStickers();
                     }
                 }
+
                 return true;
             }
         });

@@ -11,7 +11,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 class ZoomableImageView(context: Context, attrs: AttributeSet) : androidx.appcompat.widget.AppCompatImageView(context, attrs) {
-    private val scaleDetector: ScaleGestureDetector
+    public val scaleDetector: ScaleGestureDetector
     private var scaleFactor = 1f
     private val scaleListener = ScaleListener()
     init {
@@ -19,7 +19,9 @@ class ZoomableImageView(context: Context, attrs: AttributeSet) : androidx.appcom
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        scaleDetector.onTouchEvent(event)
+        if (event?.pointerCount == 2) {
+            scaleDetector.onTouchEvent(event)
+        }
         return true
     }
 
