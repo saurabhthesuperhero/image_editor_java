@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class EditActivity extends AppCompatActivity {
     String imageUrl = "";
     String imageBackUrl = "";
-    ImageView imageViewMain;
+    com.thirstyfish.downloadjavaapp.ZoomableImageView imageViewMain;
     LinearLayout bt_1_1;
     LinearLayout bt_16_9;
     LinearLayout bt_3_4;
@@ -53,7 +53,7 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
         Intent intent = getIntent();
         imageUrl = intent.getStringExtra("imageUrl");
-        imageViewMain = (ImageView) findViewById(R.id.imageViewMain);
+        imageViewMain = (com.thirstyfish.downloadjavaapp.ZoomableImageView) findViewById(R.id.imageViewMain);
         bt_1_1 = (LinearLayout) findViewById(R.id.bt_1_1);
         bt_16_9 = (LinearLayout) findViewById(R.id.bt_16_9);
         bt_3_4 = (LinearLayout) findViewById(R.id.bt_3_4);
@@ -94,6 +94,7 @@ public class EditActivity extends AppCompatActivity {
         bt_original.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                imageViewMain.reset();
                 Glide.with(EditActivity.this)
                         .load(imageUrl)
                         .into(imageViewMain);
@@ -182,6 +183,7 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                ImageUtils.INSTANCE.downloadImageFromImageView(EditActivity.this,imageViewMain);
+                imageViewMain.reset();
                 HideStickers();
 
                 ImageNonStaticUtils imageNonStaticUtils= new ImageNonStaticUtils();
@@ -192,7 +194,9 @@ public class EditActivity extends AppCompatActivity {
         ll_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageUtils.INSTANCE.shareImage(EditActivity.this,imageViewMain);
+                imageViewMain.reset();
+                HideStickers();
+                ImageUtils.INSTANCE.shareImage(EditActivity.this,imageViewMain,frame_layout);
             }
         });
 
@@ -204,16 +208,19 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        frame_layout.setOnTouchListener(new View.OnTouchListener() {
+        imageViewMain.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    HideStickers();
+                if (event.getPointerCount() == 1) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        HideStickers();
+                    }
                 }
                 return true;
             }
         });
+
 
     }
 

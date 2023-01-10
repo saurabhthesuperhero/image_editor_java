@@ -31,14 +31,14 @@ object ImageUtils {
     fun resizeImage(
         imageUrl: String,
         imageBackUrl: String,
-        imageView: ImageView,
+        imageView: com.thirstyfish.downloadjavaapp.ZoomableImageView,
         context: Context,
         targetAspectRatio: Float
     ) {
         class ResizeImageTask : AsyncTask<String, Void, Bitmap>() {
             override fun doInBackground(vararg imageUrls: String): Bitmap? {
                 val imageUrl = imageUrls[0]
-
+                imageView.reset()
                 try {
                     val originalBitmap = Glide.with(context)
                         .asBitmap()
@@ -126,14 +126,14 @@ object ImageUtils {
     fun resizeSquareImage(
         imageUrl: String,
         imageBackUrl: String,
-        imageView: ImageView,
+        imageView: com.thirstyfish.downloadjavaapp.ZoomableImageView,
         context: Context,
         targetAspectRatio: Float
     ) {
         class ResizeImageTask : AsyncTask<String, Void, Bitmap>() {
             override fun doInBackground(vararg imageUrls: String): Bitmap? {
                 val imageUrl = imageUrls[0]
-
+                imageView.reset()
                 try {
                     val originalBitmap = Glide.with(context)
                         .asBitmap()
@@ -247,10 +247,42 @@ object ImageUtils {
         }
     }
 
-    fun shareImage(context: Context, imageView: ImageView) {
-        // create a bitmap from the ImageView's drawable
-        val drawable = imageView.drawable as BitmapDrawable
-        val bitmap = drawable.bitmap
+//    fun shareImage(context: Context, imageView: ImageView) {
+//        // create a bitmap from the ImageView's drawable
+//        val drawable = imageView.drawable as BitmapDrawable
+//        val bitmap = drawable.bitmap
+//
+//        // generate a random file name
+//        val fileName = UUID.randomUUID().toString() + ".png"
+//
+//        // create a file to save the image
+//        val file = File(context.cacheDir, fileName)
+//
+//        try {
+//            // create a file output stream and save the image
+//            val stream = FileOutputStream(file)
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+//            stream.flush()
+//            stream.close()
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//
+//        // create the share intent and start the activity
+//        val intent = Intent(Intent.ACTION_SEND)
+//        intent.type = "image/png"
+//        val uri =
+//            FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file)
+//        intent.putExtra(Intent.EXTRA_STREAM, uri)
+//        context.startActivity(Intent.createChooser(intent, "Share image"))
+//    }
+    fun shareImage(context: Context, imageView: ImageView, frameLayout: FrameLayout) {
+        // create a bitmap from the ImageView and frameLayout
+        val bitmap = Bitmap.createBitmap(imageView.width, imageView.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        // Draw the ImageView and frameLayout onto the canvas
+        imageView.draw(canvas)
+        frameLayout.draw(canvas)
 
         // generate a random file name
         val fileName = UUID.randomUUID().toString() + ".png"
